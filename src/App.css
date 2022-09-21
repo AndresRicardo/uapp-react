@@ -1,0 +1,92 @@
+*{
+  box-sizing: border-box;
+}
+
+.App{
+  width: 100%;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+header {
+  width: 100%;
+  margin-bottom: 15px;
+  padding: 15px;
+  border: 1px solid #bdc1c3;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  background-color: #eaeaea;
+}
+
+#logoSigfoxOperator {
+  width: 100px;
+}
+
+#logoSigfoxOperator img {
+  width: 100%;
+}
+
+header h1 {
+  align-self: center;
+  text-align: center;
+  color: #230068;
+  font-weight: 400;
+}
+
+header #logoWnd {
+  width: 100px;
+}
+
+header #logoWnd img {
+  width: 100%;
+}
+
+#main {
+  width: 100%;
+  min-height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: flex-start;
+}
+
+#sidebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  background-color: #eaeaea;
+  width: 340px;
+  height: 100%;
+  margin: 10px 10px 0px 0px;
+  padding: 0px;
+  border: 1px solid #bdc1c3;
+  border-radius: 5px;
+}
+
+#container {
+  width: 100%;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.btn{
+  height: 40px;
+  border-radius: 5px;
+  border: none;
+  font-weight: 500;
+  font-size: 16px;  
+}
+
+.btn-primary{
+background-color: #0C66E8;
+color: white;
+
+}

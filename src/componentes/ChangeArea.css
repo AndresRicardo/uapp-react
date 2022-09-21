@@ -1,0 +1,62 @@
+body #main #container #changeArea {
+    background-color: #eaeaea;
+    width: max-content;
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #bdc1c3;
+    border-radius: 5px;
+    display: block;
+}
+
+body #main #container #changeArea #changeAreaInputs {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+body #main #container #changeArea #changeAreaInputs #methodSelector {
+    width: auto;
+    margin: 10px;
+}
+
+body #main #container #changeArea #changeAreaInputs #dateMethod {
+    width: auto;
+    display: block;
+}
+
+body #main #container #changeArea #changeAreaInputs #durationMethod {
+    width: auto;
+    display: none;
+}
+
+body #main #container #changeArea #changeAreaInputs #updateButton {
+    display: block;
+    margin-left: 10px;
+}
+
+body #main #container #changeArea #changeAreaAlerts .alert {
+    display: none;
+}
+
+body #main #container #changeArea #loading {
+    display: flex;
+}
+
+body #main #container #changeArea #devicesTable {
+    margin: 10px;
+    text-align: center;
+    display: block;
+    border: 1px solid #0d6efd;
+    background-color: white;
+}
+
+body #main #container #changeArea #devicesTable th {
+    background-color: #0d6efd;
+    color: white;
+    padding: 0px 8px;
+}
+
+body #main #container #changeArea #devicesTable td {
+    padding: 0px 8px;
+}

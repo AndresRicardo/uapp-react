@@ -1,0 +1,29 @@
+body #main #container #multipleDeviceUnsubscribe {
+    background-color: #eaeaea;
+    width: 380px;
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #bdc1c3;
+    border-radius: 5px;
+    display: block;
+}
+
+body #main #container #multipleDeviceUnsubscribe input {
+    width: 20rem;
+}
+
+body #main #container #multipleDeviceUnsubscribe form {
+    padding: 10px;
+}
+
+body #main #container #multipleDeviceUnsubscribe form .alert {
+    width: 100%;
+    height: fit-content;
+    margin: 20px 0px 0px 0px;
+    display: none;
+}
+
+body #main #container #multipleDeviceUnsubscribe form Button {
+    width: 100%;
+    margin: 20px 0px 0px 0px;
+}

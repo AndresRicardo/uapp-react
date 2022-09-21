@@ -1,0 +1,36 @@
+#singleDeviceUnsubscribe {
+    background-color: #eaeaea;
+    width: max-content;
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #bdc1c3;
+    border-radius: 5px;
+    display: block;
+}
+
+body #main #container #singleDeviceUnsubscribe input {
+    width: 100%;
+}
+
+body #main #container #singleDeviceUnsubscribe form {
+    padding: 10px;
+}
+
+body #main #container #singleDeviceUnsubscribe form .text-danger {
+    width: 100%;
+    height: fit-content;
+    margin: 10px 0px 0px 0px;
+    display: none;
+}
+
+body #main #container #singleDeviceUnsubscribe form .alert {
+    width: 100%;
+    height: fit-content;
+    margin: 20px 0px 0px 0px;
+    display: none;
+}
+
+body #main #container #singleDeviceUnsubscribe form Button {
+    width: 100%;
+    margin: 20px 0px 0px 0px;
+}

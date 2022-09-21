@@ -1,0 +1,40 @@
+body #main #container #getDevicesList {
+    background-color: #eaeaea;
+    width: 380px;
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #bdc1c3;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+}
+
+body #main #container #getDevicesList input {
+    width: 100%;
+}
+
+body #main #container #getDevicesList .text-danger {
+    display: none;
+    margin-top: 10px;
+}
+
+body #main #container #getDevicesList .text-success {
+    display: none;
+    margin-top: 10px;
+}
+
+body #main #container #getDevicesList .alert {
+    display: none;
+    margin-top: 20px;
+}
+
+body #main #container #getDevicesList Button {
+    margin-top: 20px;
+    width: 100%;
+}
+
+body #main #container #getDevicesList #labelEnd,
+body #main #container #getDevicesList #end {
+    margin: 0.4rem 0;
+    display: none;
+}
