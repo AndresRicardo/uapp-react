@@ -5,7 +5,7 @@ body #main #container #changeArea {
     padding: 10px;
     border: 1px solid #bdc1c3;
     border-radius: 5px;
-    display: block;
+    /* display: block; */
 }
 
 body #main #container #changeArea #changeAreaInputs {
@@ -59,4 +59,12 @@ body #main #container #changeArea #devicesTable th {
 
 body #main #container #changeArea #devicesTable td {
     padding: 0px 8px;
+}
+
+.display_none {
+    display: none;
+}
+
+.display_block {
+    display: block;
 }

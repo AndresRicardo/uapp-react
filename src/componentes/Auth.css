@@ -33,17 +33,3 @@ input {
     width: 100%;
     margin-top: 20px;
 }
-
-.optionButton {
-    margin-top: 0px;
-    padding: 10px;
-    width: 100%;
-    height: 50px;
-    border: none;
-    text-align: left;
-}
-
-#singleDeviceOptionButton {
-    margin-top: 20px;
-    background-color: DarkGray;
-}

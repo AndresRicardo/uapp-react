@@ -11,5 +11,8 @@
 
 #singleDeviceOptionButton {
     margin-top: 20px;
+}
+
+.focus{
     background-color: DarkGray;
 }

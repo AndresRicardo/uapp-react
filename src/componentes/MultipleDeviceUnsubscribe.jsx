@@ -1,8 +1,11 @@
 import "./MultipleDeviceUnsubscribe.css";
 
-function MultipleDeviceUnsubscribe() {
+function MultipleDeviceUnsubscribe({ visible }) {
   return (
-    <section id="multipleDeviceUnsubscribe">
+    <section
+      id="multipleDeviceUnsubscribe"
+      className={visible ? "display_block" : "display_none"}
+    >
       <h2 id="multipleDeviceTitle">Load and update devices from csv file</h2>
 
       <form id="multipleDeviceForm">

@@ -1,8 +1,11 @@
 import "./SingleDeviceUnsubscribe.css";
 
-function SingleDeviceUnsubscribe() {
+function SingleDeviceUnsubscribe({ visible }) {
   return (
-    <section id="singleDeviceUnsubscribe">
+    <section
+      id="singleDeviceUnsubscribe"
+      className={visible ? "display_block" : "display_none"}
+    >
       <h2 id="singleDeviceTitle">Search and update a device</h2>
 
       <form id="singleDeviceForm">

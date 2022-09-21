@@ -1,8 +1,8 @@
 import "./ChangeArea.css";
 
-function ChangeArea() {
+function ChangeArea({ visible }) {
   return (
-    <div id="changeArea">
+    <div id="changeArea" className={visible ? "display_block" : "display_none"}>
       <div id="changeAreaInputs">
         <select
           name="methodSelector"

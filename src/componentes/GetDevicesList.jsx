@@ -1,8 +1,12 @@
+import React from "react";
 import "./GetDevicesList.css";
 
-function GetDevicesList() {
+function GetDevicesList({ visible }) {
   return (
-    <section id="getDevicesList">
+    <section
+      id="getDevicesList"
+      className={visible ? "display_block" : "display_none"}
+    >
       <h2 id="GetDeviceTitle">Search and update devices</h2>
 
       <form id="GetDevicesListForm">
