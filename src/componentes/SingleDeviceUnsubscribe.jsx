@@ -4,7 +4,7 @@ function SingleDeviceUnsubscribe({ visible }) {
   return (
     <section
       id="singleDeviceUnsubscribe"
-      className={visible ? "display_block" : "display_none"}
+      className={visible.single ? "display_block" : "display_none"}
     >
       <h2 id="singleDeviceTitle">Search and update a device</h2>
 

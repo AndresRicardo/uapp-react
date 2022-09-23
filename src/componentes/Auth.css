@@ -20,16 +20,19 @@ input {
 }
 
 .text-danger {
-    display: none;
-    margin-top: 10px;
-}
-
-.text-success {
-    display: none;
+    /* display: none; */
     margin-top: 10px;
 }
 
 #authenticateButton {
     width: 100%;
     margin-top: 20px;
+}
+
+.d-none{
+    display: none;
+}
+
+.d-block{
+    display: block;
 }

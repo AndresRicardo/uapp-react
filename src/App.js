@@ -10,20 +10,38 @@ import ChangeArea from "./componentes/ChangeArea.jsx";
 import { useState } from "react";
 
 function App() {
-  const [visibilityStates, setVisibilityStates] = useState([
-    true,
-    false,
-    false,
-    false,
-  ]);
+  const [states, setStates] = useState({
+    visibility: {
+      single: true,
+      get: false,
+      multi: false,
+      change: false,
+    },
+    globalUsername: "",
+    globalPassword: "",
+    globalGetDevicesResponse: {}, //data recibida desde sigfox
+    globalUnsubscribeResponse: {}, //data recibida desde sigfox
+  });
 
-  const manejarClicOptionsMenu = (elemento) => {
+  const clicOptionsMenu = (elemento) => {
     console.log("clic en la opción " + elemento);
+    const visibilityActualizada = {};
 
-    if (elemento === "single") setVisibilityStates([true, false, false, false]);
-    if (elemento === "get") setVisibilityStates([false, true, false, false]);
-    if (elemento === "multi") setVisibilityStates([false, false, true, false]);
-    if (elemento === "change") setVisibilityStates([false, false, false, true]);
+    for (const key in states.visibility) {
+      if (Object.hasOwnProperty.call(states.visibility, key)) {
+        if (elemento === key) visibilityActualizada[key] = true;
+        else visibilityActualizada[key] = false;
+      }
+    }
+    setStates({ ...states, visibility: visibilityActualizada });
+  };
+
+  const clicAuthenticate = (credentials) => {
+    setStates({
+      ...states,
+      globalUsername: credentials.username,
+      globalPassword: credentials.password,
+    });
   };
 
   return (
@@ -40,15 +58,15 @@ function App() {
 
       <main id="main">
         <aside id="sidebar">
-          <Auth />
-          <OptionsMenu clic={manejarClicOptionsMenu} focus={visibilityStates} />
+          <Auth onSubmit={clicAuthenticate} />
+          <OptionsMenu clic={clicOptionsMenu} focus={states.visibility} />
         </aside>
 
         <div id="container">
-          <SingleDeviceUnsubscribe visible={visibilityStates[0]} />
-          <GetDevicesList visible={visibilityStates[1]} />
-          <MultipleDeviceUnsubscribe visible={visibilityStates[2]} />
-          <ChangeArea visible={visibilityStates[3]} />
+          <SingleDeviceUnsubscribe visible={states.visibility} />
+          <GetDevicesList visible={states.visibility} />
+          <MultipleDeviceUnsubscribe visible={states.visibility} />
+          <ChangeArea visible={states.visibility} />
         </div>
       </main>
     </div>

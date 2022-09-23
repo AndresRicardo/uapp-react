@@ -5,7 +5,7 @@ function OptionsMenu({ clic, focus }) {
   return (
     <div className="optionsMenu">
       <button
-        className={focus[0] ? "optionButton focus" : "optionButton"}
+        className={focus.single ? "optionButton focus" : "optionButton"}
         id="singleDeviceOptionButton"
         onClick={() => clic("single")}
       >
@@ -13,14 +13,14 @@ function OptionsMenu({ clic, focus }) {
       </button>
 
       <button
-        className={focus[1] ? "optionButton focus" : "optionButton"}
+        className={focus.get ? "optionButton focus" : "optionButton"}
         onClick={() => clic("get")}
       >
         Search and update devices
       </button>
 
       <button
-        className={focus[2] ? "optionButton focus" : "optionButton"}
+        className={focus.multi ? "optionButton focus" : "optionButton"}
         onClick={() => clic("multi")}
       >
         Update devices from csv file
