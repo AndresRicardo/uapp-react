@@ -44,6 +44,11 @@ function App() {
     });
   };
 
+  const clicValidateSingleDeviceButton = (respuesta) => {
+    console.log("data recibida en app: ", respuesta);
+    setStates({ ...states, globalGetDevicesResponse: { ...respuesta } });
+  };
+
   return (
     <div className="App">
       <header>
@@ -63,7 +68,12 @@ function App() {
         </aside>
 
         <div id="container">
-          <SingleDeviceUnsubscribe visible={states.visibility} />
+          <SingleDeviceUnsubscribe
+            visible={states.visibility}
+            username={states.globalUsername}
+            password={states.globalPassword}
+            submit={clicValidateSingleDeviceButton}
+          />
           <GetDevicesList visible={states.visibility} />
           <MultipleDeviceUnsubscribe visible={states.visibility} />
           <ChangeArea visible={states.visibility} />
