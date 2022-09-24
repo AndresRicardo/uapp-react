@@ -46,7 +46,10 @@ function App() {
 
   const clicValidateSingleDeviceButton = (respuesta) => {
     console.log("data recibida en app: ", respuesta);
-    setStates({ ...states, globalGetDevicesResponse: { ...respuesta } });
+    setStates({
+      ...states,
+      globalGetDevicesResponse: { ...respuesta },
+    });
   };
 
   return (

@@ -24,34 +24,49 @@ function SingleDeviceUnsubscribe({ visible, submit, username, password }) {
   //cuando se hace click en el boton: Get a device from sigfox
   const clicBoton = (e) => {
     e.preventDefault();
-    // loadingData(true);
-    // usernameError.style.display = "none";
-    // passwordError.style.display = "none";
-    // changeArea.style.display = "none";
-    // alertError.style.display = "none";
-    // alertSuccess.style.display = "none";
-    // devicesTable.style.display = "none";
+
     ErrorDeviceId.current.style.display = "none";
     ErrorValidatingDevice.current.style.display = "none";
 
-    let globalGetDevicesResponse = {}; //se vacia la variable con anteriores respuestas
-
-    let error = false;
+    let globalGetDevicesResponse = {
+      error: false,
+      errorType: "no error",
+      sigfoxResponse: {},
+      origin: "",
+      loadingData: true,
+      pintarData: {},
+      displays: {
+        usernameErrorDisplay: "none",
+        passwordErrorDisplay: "none",
+        changeAreaDisplay: "none",
+        alertErrorDisplay: "none",
+        alertSuccessDisplay: "none",
+        devicesTableDisplay: "none",
+        ErrorDeviceIdDisplay: "none",
+        ErrorValidatingDeviceDisplay: "none",
+        updateButtonDisplay: "none",
+        dateMethodDisplay: "none,",
+      },
+    }; //respuesta
 
     if (!regexpUserName.test(username)) {
-      // usernameError.style.display = "block";
-      error = true;
+      globalGetDevicesResponse.displays.usernameErrorDisplay = "block";
+      globalGetDevicesResponse.error = true;
+      globalGetDevicesResponse.errorType = "username error";
     }
     if (!regexpPassword.test(password)) {
-      // passwordError.style.display = "block";
-      error = true;
+      globalGetDevicesResponse.displays.passwordErrorDisplay = "block";
+      globalGetDevicesResponse.error = true;
+      globalGetDevicesResponse.errorType = "password error";
     }
     if (!regexpDeviceId.test(deviceID.current.value)) {
       ErrorDeviceId.current.style.display = "block";
-      error = true;
+      globalGetDevicesResponse.displays.ErrorDeviceIdDisplay = "block";
+      globalGetDevicesResponse.error = true;
+      globalGetDevicesResponse.errorType = "deviceId error";
     }
-    if (error) {
-      // loadingData(false);
+    if (globalGetDevicesResponse.error) {
+      globalGetDevicesResponse.loadingData = false;
       submit(globalGetDevicesResponse);
     }
 
@@ -67,23 +82,29 @@ function SingleDeviceUnsubscribe({ visible, submit, username, password }) {
     getdevicesResponse.then((dataJson) => {
       console.log("DATA RECIBIDA DESDE BACKEND UAAP: ");
       if (dataJson) {
-        globalGetDevicesResponse = { ...dataJson };
-        globalGetDevicesResponse["origin"] = "single";
-        console.log(globalGetDevicesResponse);
-        // pintarData(dataJson);
-        // if (dataJson.data.length != 0) {
-        // updateButton.style.display = "inline-block";
-        // dateMethod.style.display = "inline-block";
-        // } else {
-        // updateButton.style.display = "none";
-        // dateMethod.style.display = "none";
-        // }
+        globalGetDevicesResponse.sigfoxResponse = { ...dataJson };
+        globalGetDevicesResponse.origin = "single";
+        console.log(globalGetDevicesResponse.sigfoxResponse);
+        globalGetDevicesResponse.pintarData = { ...dataJson };
+
+        if (dataJson.data.length !== 0) {
+          globalGetDevicesResponse.displays.updateButtonDisplay =
+            "inline-block";
+          globalGetDevicesResponse.displays.dateMethodDisplay = "inline-block";
+        } else {
+          globalGetDevicesResponse.displays.updateButtonDisplay = "none";
+          globalGetDevicesResponse.displays.dateMethodDisplay = "none";
+        }
       } else {
-        globalGetDevicesResponse = {};
+        // globalGetDevicesResponse = {};
         ErrorValidatingDevice.current.style.display = "inline-block";
+        globalGetDevicesResponse.displays.ErrorValidatingDeviceDisplay =
+          "inline-block";
+        globalGetDevicesResponse.error = true;
+        globalGetDevicesResponse.errorType = "ErrorValidatingDevice";
       }
+      globalGetDevicesResponse.loadingData = false;
       submit(globalGetDevicesResponse);
-      //   loadingData(false);
     });
   };
 
