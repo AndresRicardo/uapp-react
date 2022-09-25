@@ -19,7 +19,7 @@ function App() {
     },
     globalUsername: "",
     globalPassword: "",
-    globalGetDevicesResponse: {}, //data recibida desde sigfox
+    globalGetDevicesResponse: { sigfoxResponse: { data: [] } }, //data recibida desde sigfox
     globalUnsubscribeResponse: {}, //data recibida desde sigfox
   });
 
@@ -79,7 +79,10 @@ function App() {
           />
           <GetDevicesList visible={states.visibility} />
           <MultipleDeviceUnsubscribe visible={states.visibility} />
-          <ChangeArea visible={states.visibility} />
+          <ChangeArea
+            visible={states.visibility}
+            globalData={{ ...states.globalGetDevicesResponse }}
+          />
         </div>
       </main>
     </div>
