@@ -19,7 +19,45 @@ function App() {
     },
     globalUsername: "",
     globalPassword: "",
-    globalGetDevicesResponse: { sigfoxResponse: { data: [] } }, //data recibida desde sigfox
+    globalGetDevicesResponse: {
+      error: false,
+      errorType: "no error",
+      sigfoxResponse: {
+        data: [
+          {
+            id: "",
+            deviceType: { id: "" },
+            group: { id: "" },
+            token: { end: "" },
+            verificacion: undefined,
+          },
+        ],
+      },
+      origin: "",
+      loadingData: true,
+      pintarData: {
+        data: [
+          {
+            id: "",
+            deviceType: { id: "" },
+            group: { id: "" },
+            token: { end: "" },
+          },
+        ],
+      },
+      displays: {
+        usernameErrorDisplay: "none",
+        passwordErrorDisplay: "none",
+        changeAreaDisplay: "none",
+        alertErrorDisplay: "none",
+        alertSuccessDisplay: "none",
+        devicesTableDisplay: "none",
+        ErrorDeviceIdDisplay: "none",
+        ErrorValidatingDeviceDisplay: "none",
+        updateButtonDisplay: "none",
+        dateMethodDisplay: "none,",
+      },
+    }, //data recibida desde sigfox
     globalUnsubscribeResponse: {}, //data recibida desde sigfox
   });
 

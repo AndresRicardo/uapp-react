@@ -1,11 +1,16 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import "./ChangeArea.css";
 
 function ChangeArea({ visible, globalData }) {
+  console.log("render ChangeArea");
+
   const changeArea = useRef();
   const devicesTable = useRef();
-  const alertErrorr = useRef();
-  const tableBody = useRef();
+  const alertError = useRef();
+  const methodSelector = useRef();
+  const dateMethod = useRef();
+  const durationMethod = useRef();
+  // const tableBody = useRef();
 
   function formatoFecha(fecha) {
     let day = fecha.getDate();
@@ -29,18 +34,108 @@ function ChangeArea({ visible, globalData }) {
     return resp;
   }
 
-  console.log(`pintando data recibida Data: `, globalData);
-  if (globalData.sigfoxResponse.data.length > 0) {
-    changeArea.current.style.display = "block";
-    devicesTable.current.style.display = "block";
-
-    // if (item.verificacion == true) color = "green";
-    // if (item.verificacion == false) color = "red";
-    // if (item.verificacion == undefined) color = "black";
-  } else {
-    // alertError.current.textContent = "No devices to unsubscribe!";
-    // alertErrorr.current.style.display = "block";
+  function setCurrentTime() {
+    const tiempoTranscurrido = Date.now();
+    const hoy = new Date(tiempoTranscurrido);
+    dateMethod.current.style.display = "inline-block";
+    const fechas = formatoFecha(hoy);
+    dateMethod.current.value = fechas.plusOneYear;
+    dateMethod.current.min = fechas.today;
   }
+
+  useEffect(() => {
+    if (globalData.sigfoxResponse.data.length > 0) {
+      changeArea.current.style.display = "block";
+      devicesTable.current.style.display = "block";
+      alertError.current.style.display = "none";
+    } else {
+      alertError.current.textContent = "No devices to unsubscribe!";
+      alertError.current.style.display = "block";
+    }
+
+    setCurrentTime();
+  });
+
+  // al seleccionar el metodo para establecer el tiempo de dar de baja
+  const methodSelectorOnChange = (e) => {
+    e.preventDefault();
+    if (methodSelector.current.selectedIndex === 0) {
+      dateMethod.current.style.display = "block";
+      durationMethod.current.style.display = "none";
+    }
+    if (methodSelector.current.selectedIndex === 1) {
+      dateMethod.current.style.display = "none";
+      durationMethod.current.style.display = "block";
+    }
+    console.log("methodSelector: ", methodSelector.selectedIndex);
+  };
+
+  //cuando se hace click en el boton Update
+  // updateButton.addEventListener("click", (e) => {
+  //   e.preventDefault();
+  //   loadingData(true);
+  //   alertError.style.display = "none";
+  //   alertSuccess.style.display = "none";
+
+  //   //crear request post al backend uapp para cambiar token validity a multiples devices
+  //   console.log("RUTINA PARA CAMBIAR TOKEN VALIDITY A MULTIPLES DEVICES");
+
+  //   //verificar si hay devices para hacer update
+  //   if (!globalGetDevicesResponse.hasOwnProperty("data")) {
+  //     loadingData(false);
+  //     alertError.textContent = "No devices to unsubscribe!";
+  //     alertError.style.display = "inline-block";
+  //     return;
+  //   }
+
+  //   // armar body del request al backend de uapp
+  //   let requestBody = {
+  //     data: [],
+  //   };
+
+  //   requestBody["origin"] = globalGetDevicesResponse.origin;
+
+  //   globalGetDevicesResponse.data.forEach((element) => {
+  //     requestBody.data.push({
+  //       id: element.id,
+  //       unsubscriptionTime: dateMethod.valueAsNumber,
+  //     });
+
+  //     element["unsubscriptionTime"] = dateMethod.valueAsNumber;
+  //   });
+
+  //   //hacer update de todos los devices de la lista
+  //   let unsubResponse = unsubscribeMultipleDevices(
+  //     username.value,
+  //     password.value,
+  //     group.value,
+  //     requestBody
+  //   );
+
+  //   //operar respuesta obtenida del backend uapp
+  //   unsubResponse.then((resp) => {
+  //     console.log("RESPUESTA DEL BACKEND UAAP A LA SOLICITUD DE DAR DE BAJA: ");
+  //     globalUnsubscribeResponse = resp;
+  //     console.log(resp);
+
+  //     if (resp.hasOwnProperty("jobId")) {
+  //       alertSuccess.style.display = "inline-block";
+
+  //       //verificar que los cambios se efectuaron correctamente a todos los devices
+  //       //se compara lo que se mandó a cambiar con información obtenida del backend despues d realizados los cambios
+  //       verificarCambios(
+  //         username.value,
+  //         password.value,
+  //         deviceID.value,
+  //         group.value,
+  //         deviceType.value,
+  //         globalGetDevicesResponse
+  //       );
+  //     }
+
+  //     loadingData(false);
+  //   });
+  // });
 
   return (
     <div
@@ -52,19 +147,27 @@ function ChangeArea({ visible, globalData }) {
         <select
           name="methodSelector"
           id="methodSelector"
+          ref={methodSelector}
           className="form-select"
           aria-label="Default select example"
           defaultValue={"Unsubscription Date"}
+          onChange={methodSelectorOnChange}
         >
           <option value="unsubscriptionDate">Unsubscription Date</option>
           <option value="subscriptionDuration">Unsubscription Duration</option>
         </select>
 
-        <input type="date" id="dateMethod" className="form-control" />
+        <input
+          type="date"
+          id="dateMethod"
+          className="form-control"
+          ref={dateMethod}
+        />
 
         <input
           type="datetime"
           id="durationMethod"
+          ref={durationMethod}
           className="form-control"
           placeholder="1 Year"
         />
@@ -81,7 +184,7 @@ function ChangeArea({ visible, globalData }) {
 
         <p
           id="alertError"
-          ref={alertErrorr}
+          ref={alertError}
           className="alert alert-danger"
           role="alert"
         >
@@ -113,16 +216,19 @@ function ChangeArea({ visible, globalData }) {
 
           <>
             {globalData.sigfoxResponse.data.map((reg) => (
-              <tr key={reg.id}>
-                <td key={reg.id}>{reg.id}</td>
-                <td key={reg.deviceType.id}>{reg.deviceType.id}</td>
-                <td key={reg.group.id}>{reg.group.id}</td>
-                <td
-                  className="tvItem"
-                  key={formatoFecha(new Date(reg.token.end)).today}
-                >
-                  {formatoFecha(new Date(reg.token.end)).today}
-                </td>
+              <tr
+                className={
+                  reg.verificacion === undefined
+                    ? "color_back"
+                    : reg.verificacion
+                    ? "color_green"
+                    : "color_red"
+                }
+              >
+                <td>{reg.id} </td>
+                <td>{reg.deviceType.id} </td>
+                <td>{reg.group.id} </td>
+                <td>{formatoFecha(new Date(reg.token.end)).today} </td>
               </tr>
             ))}
           </>
@@ -133,36 +239,3 @@ function ChangeArea({ visible, globalData }) {
 }
 
 export default ChangeArea;
-
-//pintar en la tabla la info recibida
-// const pintarData = (Data, color = "black") => {
-//   console.log(`pintando data recibida Data: ${Data}`, Data);
-//   if (Data.data.length > 0) {
-//     changeArea.style.display = "block";
-//     devicesTable.style.display = "block";
-
-//     Data.data.forEach((item) => {
-//       const clone = templateFila.cloneNode(true);
-//       clone.querySelector(".idItem").textContent = item.id;
-//       clone.querySelector(".dtItem").textContent = item.deviceType.id;
-//       clone.querySelector(".grItem").textContent = item.group.id;
-//       clone.querySelector(".tvItem").textContent = formatoFecha(
-//         new Date(item.token.end)
-//       ).today;
-
-//       if (item.verificacion == true) color = "green";
-//       if (item.verificacion == false) color = "red";
-//       if (item.verificacion == undefined) color = "black";
-
-//       clone.querySelector(".idItem").style.color = color;
-//       clone.querySelector(".dtItem").style.color = color;
-//       clone.querySelector(".grItem").style.color = color;
-//       clone.querySelector(".tvItem").style.color = color;
-//       fragment.appendChild(clone);
-//     });
-//     tableBody.appendChild(fragment);
-//   } else {
-//     alertError.textContent = "No devices to unsubscribe!";
-//     alertError.style.display = "block";
-//   }
-// };

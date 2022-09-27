@@ -11,16 +11,6 @@ function SingleDeviceUnsubscribe({ visible, submit, username, password }) {
   const regexpUserName = /^[A-Za-z0-9\s]+$/;
   const regexpPassword = /^[A-Za-z0-9\s]+$/;
 
-  //para establecer la fecha actual y minima permitida al input date
-  // function setCurrentTime() {
-  //   const tiempoTranscurrido = Date.now();
-  //   const hoy = new Date(tiempoTranscurrido);
-  //   dateMethod.style.display = "inline-block";
-  //   const fechas = formatoFecha(hoy);
-  //   dateMethod.value = fechas.plusOneYear;
-  //   dateMethod.min = fechas.today;
-  // }
-
   //cuando se hace click en el boton: Get a device from sigfox
   const clicBoton = (e) => {
     e.preventDefault();
@@ -31,7 +21,17 @@ function SingleDeviceUnsubscribe({ visible, submit, username, password }) {
     let response = {
       error: false,
       errorType: "no error",
-      sigfoxResponse: {},
+      sigfoxResponse: {
+        data: [
+          {
+            id: "",
+            deviceType: { id: "" },
+            group: { id: "" },
+            token: { end: "" },
+            verificacion: undefined,
+          },
+        ],
+      },
       origin: "",
       loadingData: true,
       pintarData: {},
@@ -68,6 +68,7 @@ function SingleDeviceUnsubscribe({ visible, submit, username, password }) {
     if (response.error) {
       response.loadingData = false;
       submit(response);
+      return response;
     }
 
     // //se pone la fecha actual y minima permitida al input date

@@ -35,6 +35,7 @@ async function getDevicesFromSigfox(
     options.headers.devicetypeid = formDeviceTypeId;
   }
   url = `${url}?${params.toString()}`;
+
   try {
     const response = await fetch(url, options);
     if (response.ok) {

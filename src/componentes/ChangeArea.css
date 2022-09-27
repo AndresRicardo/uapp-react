@@ -68,3 +68,11 @@ body #main #container #changeArea #devicesTable td {
 .display_block {
     display: block;
 }
+
+.color_green{
+    color:green;
+}
+
+.color_red{
+    color: red;
+}
