@@ -228,7 +228,11 @@ function ChangeArea({ visible, globalData }) {
                 <td>{reg.id} </td>
                 <td>{reg.deviceType.id} </td>
                 <td>{reg.group.id} </td>
-                <td>{formatoFecha(new Date(reg.token.end)).today} </td>
+                <td>
+                  {reg.token
+                    ? formatoFecha(new Date(reg.token.end)).today
+                    : "No Token"}{" "}
+                </td>
               </tr>
             ))}
           </>
