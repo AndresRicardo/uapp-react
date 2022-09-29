@@ -2,6 +2,7 @@ import React from "react";
 import "./OptionsMenu.css";
 
 function OptionsMenu({ clic, focus }) {
+  console.log("Render OptionsMenu");
   return (
     <div className="optionsMenu">
       <button

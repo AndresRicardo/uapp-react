@@ -44,7 +44,7 @@ function ChangeArea({ visible, globalData }) {
   }
 
   useEffect(() => {
-    if (globalData.sigfoxResponse.data.length > 0) {
+    if (globalData.sigfoxResponse.data[0].id !== "") {
       changeArea.current.style.display = "block";
       devicesTable.current.style.display = "block";
       alertError.current.style.display = "none";
@@ -208,6 +208,7 @@ function ChangeArea({ visible, globalData }) {
         <caption>Devices list from sigfox</caption>
         <tbody id="devicesTableBody">
           <tr>
+            <th>ITEM</th>
             <th>DEVICE ID</th>
             <th>DEVICE TYPE</th>
             <th>GROUP</th>
@@ -224,14 +225,16 @@ function ChangeArea({ visible, globalData }) {
                     ? "color_green"
                     : "color_red"
                 }
+                key={reg.id}
               >
+                <td>{globalData.sigfoxResponse.data.indexOf(reg) + 1} </td>
                 <td>{reg.id} </td>
                 <td>{reg.deviceType.id} </td>
                 <td>{reg.group.id} </td>
                 <td>
                   {reg.token
                     ? formatoFecha(new Date(reg.token.end)).today
-                    : "No Token"}{" "}
+                    : "No Token"}
                 </td>
               </tr>
             ))}

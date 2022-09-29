@@ -3,6 +3,7 @@ import { useRef } from "react";
 import "./SingleDeviceUnsubscribe.css";
 
 function SingleDeviceUnsubscribe({ visible, submit, username, password }) {
+  console.log("Render SingleDeviceUnsubscribe");
   const ErrorValidatingDevice = useRef();
   const ErrorDeviceId = useRef();
   const deviceID = useRef();

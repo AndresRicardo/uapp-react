@@ -10,6 +10,7 @@ import ChangeArea from "./componentes/ChangeArea.jsx";
 import { useState } from "react";
 
 function App() {
+  console.log("Render App");
   const [states, setStates] = useState({
     visibility: {
       single: true,
@@ -63,15 +64,13 @@ function App() {
 
   const clicOptionsMenu = (elemento) => {
     console.log("clic en la opción " + elemento);
-    const visibilityActualizada = {};
+    const estadoActualizado = { ...states };
 
-    for (const key in states.visibility) {
-      if (Object.hasOwnProperty.call(states.visibility, key)) {
-        if (elemento === key) visibilityActualizada[key] = true;
-        else visibilityActualizada[key] = false;
-      }
+    for (const key in estadoActualizado.visibility) {
+      if (key === elemento) estadoActualizado.visibility[key] = true;
+      else estadoActualizado.visibility[key] = false;
     }
-    setStates({ ...states, visibility: visibilityActualizada });
+    setStates(estadoActualizado);
   };
 
   const clicAuthenticate = (credentials) => {
@@ -83,7 +82,7 @@ function App() {
   };
 
   const clicValidateSingleDeviceButton = (respuesta) => {
-    console.log("data recibida en app: ", respuesta);
+    console.log("data recibida en app desde single: ", respuesta);
     setStates({
       ...states,
       globalGetDevicesResponse: { ...respuesta },
@@ -91,7 +90,15 @@ function App() {
   };
 
   const clicValidateGetDevicesButton = (respuesta) => {
-    console.log("data recibida en app: ", respuesta);
+    console.log("data recibida en app desde multi: ", respuesta);
+    setStates({
+      ...states,
+      globalGetDevicesResponse: { ...respuesta },
+    });
+  };
+
+  const changeCsv = (respuesta) => {
+    console.log("data recibida en app desde csv: ", respuesta);
     setStates({
       ...states,
       globalGetDevicesResponse: { ...respuesta },
@@ -129,7 +136,13 @@ function App() {
             password={states.globalPassword}
             submit={clicValidateGetDevicesButton}
           />
-          <MultipleDeviceUnsubscribe visible={states.visibility} />
+          <MultipleDeviceUnsubscribe
+            visible={states.visibility}
+            username={states.globalUsername}
+            password={states.globalPassword}
+            // submit={}
+            changeCsv={changeCsv}
+          />
           <ChangeArea
             visible={states.visibility}
             globalData={{ ...states.globalGetDevicesResponse }}

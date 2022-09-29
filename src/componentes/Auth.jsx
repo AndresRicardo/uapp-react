@@ -3,6 +3,7 @@ import { useState } from "react";
 import "./Auth.css";
 
 function Auth({ onSubmit }) {
+  console.log("Render Auth");
   const [states, setStates] = useState({
     error: false,
     usernameErrorDisplay: "d-none",

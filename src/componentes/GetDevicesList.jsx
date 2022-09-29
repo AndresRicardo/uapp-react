@@ -4,6 +4,7 @@ import "./GetDevicesList.css";
 import getDevicesFromSigfox from "../getDevicesFromSigfox";
 
 function GetDevicesList({ username, password, visible, submit }) {
+  console.log("Render GetDevicesList");
   const group = useRef();
   const deviceType = useRef();
   const groupError = useRef();
