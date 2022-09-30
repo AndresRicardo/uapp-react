@@ -1,18 +1,18 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import "./MultipleDeviceUnsubscribe.css";
 
 function MultipleDeviceUnsubscribe({
   username,
   password,
+  dataFromCsv,
   visible,
   submit,
   changeCsv,
 }) {
   console.log("Render MultipleDeviceUnsubscribe");
+  console.log("clicBoton, state.sigfoxResponse: ", dataFromCsv.sigfoxResponse);
 
-  const csvFileInput = useRef();
-
-  let response = {
+  let globalResponse = {
     error: false,
     errorType: "no error",
     sigfoxResponse: {
@@ -43,12 +43,15 @@ function MultipleDeviceUnsubscribe({
     },
   }; //respuesta
 
+  const csvFileInput = useRef();
+  const [state, setState] = useState({ ...globalResponse });
+
   //cuando se selecciona un archivo csv
   const csvFileInputChange = () => {
     let fr = new FileReader();
     fr.readAsText(csvFileInput.current.files[0]);
 
-    response.sigfoxResponse.data = [];
+    globalResponse.sigfoxResponse.data = [];
 
     //cuando se termine de cargar el archivo
     fr.onload = function () {
@@ -65,97 +68,158 @@ function MultipleDeviceUnsubscribe({
         };
 
         if (!element.includes("Id") && element.length > 0)
-          response.sigfoxResponse.data.push(item);
+          globalResponse.sigfoxResponse.data.push(item);
       });
 
-      response.origin = "csv";
-      response.loadingData = false;
-      response.pintarData = { ...response.sigfoxResponse };
+      globalResponse.origin = "csv";
+      globalResponse.loadingData = false;
+      globalResponse.pintarData = { ...globalResponse.sigfoxResponse };
 
-      changeCsv(response);
-      return response;
-      // pintarData(response, "black");
+      setState({ ...globalResponse });
+      changeCsv(globalResponse);
+      return globalResponse;
     };
   };
 
+  //funcion para comparar unsubscribeTime ()
+  function compararDatos(devicesList, responseList) {
+    let dataVerificada = { ...devicesList };
+
+    dataVerificada.data.forEach((element) => {
+      responseList.data.forEach((ele) => {
+        if (parseInt(ele.id, 16) === parseInt(element.id, 16)) {
+          element["deviceType"]["id"] = ele["deviceType"];
+          element["group"]["id"] = ele["group"];
+          element["token"]["end"] = ele["token"];
+
+          if (ele.unsubscriptionTime === element.unsubscriptionTime)
+            element["verificacion"] = true;
+          else element["verificacion"] = false;
+        }
+      });
+    });
+
+    return dataVerificada;
+  }
+
   //cuando se hace click en boton validar devices cargados desde csv
-  const clicBoton = () => {
-    // getFromSigfoxDevicesInList(username, password, response, false);
+  const clicBoton = (e) => {
+    e.preventDefault();
+
+    console.log(
+      "clicBoton, state.sigfoxResponse: ",
+      dataFromCsv.sigfoxResponse
+    );
+    getFromSigfoxDevicesInList(
+      username,
+      password,
+      dataFromCsv.sigfoxResponse,
+      false
+    );
+
+    // return globalResponse;
   };
 
-  // // funcion para buscar en sigfox info de devices a partir de una listado de devices
-  // function getFromSigfoxDevicesInList(
-  //   username,
-  //   password,
-  //   devicesList,
-  //   isForUpdate = false
-  // ) {
-  //   //todas las respuestas de los devices de la lista
-  //   let responseList = { data: [] };
+  // funcion para buscar en sigfox info de devices a partir de una listado de devices
+  function getFromSigfoxDevicesInList(
+    username,
+    password,
+    devicesListToVerify,
+    isForUpdate = false
+  ) {
+    //todas las respuestas de los devices de la lista
+    let sigfoxResponse = { data: [] };
 
-  //   // armar request generico
-  //   const options = {
-  //     method: "GET", // *GET, POST, PUT, DELETE, etc.
-  //     mode: "cors", // no-cors, *cors, same-origin
-  //     credentials: "same-origin", // include, *same-origin, omit
-  //     headers: {
-  //       user: username,
-  //       password: password,
-  //       accept: "application/json",
-  //       "content-Type": "application/json",
-  //     },
-  //   };
+    // armar request generico
+    const options = {
+      method: "GET", // *GET, POST, PUT, DELETE, etc.
+      mode: "cors", // no-cors, *cors, same-origin
+      credentials: "same-origin", // include, *same-origin, omit
+      headers: {
+        user: username,
+        password: password,
+        accept: "application/json",
+        "content-Type": "application/json",
+      },
+    };
 
-  //   let count = 0;
+    let count = 0;
 
-  //   //recorrer listado de devices
-  //   devicesList.data.forEach((element) => {
-  //     //armar url para cada device de la lista
-  //     let params = new URLSearchParams();
-  //     params.append("id", element.id);
-  //     let url = `http://localhost:3000/devices?${params.toString()}`;
+    console.log(devicesListToVerify);
+    //recorrer listado de devices
+    devicesListToVerify.data.forEach((element) => {
+      //armar url para cada device de la lista
+      let params = new URLSearchParams();
+      params.append("id", element.id);
+      let url = `http://localhost:3000/devices?${params.toString()}`;
 
-  //     fetch(url, options)
-  //       .then((resp) => {
-  //         if (resp.ok) {
-  //           resp
-  //             .json()
-  //             .then((deviceInfo) => {
-  //               count++;
-  //               responseList.data.push(deviceInfo.data[0]);
+      fetch(url, options)
+        .then((resp) => {
+          if (resp.ok) {
+            resp
+              .json()
+              .then((deviceInfo) => {
+                count++;
+                sigfoxResponse.data.push(deviceInfo.data[0]);
 
-  //               //cuando se llega al final de las consultas individuales a sigfox inicia verificación
-  //               if (count === devicesList.data.length) {
-  //                 if (!isForUpdate) {
-  //                   // pintarData(responseList);
-  //                 } else {
-  //                   compararDatos(devicesList, responseList);
-  //                 }
-  //               }
-  //             })
-  //             .catch((error) => {
-  //               //cuando se llega al final de las consultas individuales a sigfox inicia verificación
-  //               count++;
-  //               if (count === devicesList.data.length) {
-  //                 if (!isForUpdate) {
-  //                   // pintarData(responseList);
-  //                 } else {
-  //                   compararDatos(devicesList, responseList);
-  //                 }
-  //               }
-  //             });
-  //         } else console.log(`resp.status: ${resp.status}`);
-  //       })
-  //       .catch((error) => {
-  //         console.log(
-  //           `iteración en lista de devices. index: ${devicesList.data.indexOf(
-  //             element
-  //           )}, device: ${element.id}`
-  //         );
-  //         console.log(`fetch fail`);
-  //       });
-  //   });
-  // }
+                //cuando se llega al final de las consultas individuales a sigfox, inicia verificación
+                if (count === devicesListToVerify.data.length) {
+                  if (!isForUpdate) {
+                    globalResponse.sigfoxResponse = { ...sigfoxResponse };
+                    globalResponse.pintarData = { ...sigfoxResponse };
+                    globalResponse.loadingData = false;
+
+                    setState({ ...globalResponse });
+                    submit(globalResponse);
+                  } else {
+                    const dataVerificada = compararDatos(
+                      devicesListToVerify,
+                      sigfoxResponse
+                    );
+                    globalResponse.sigfoxResponse = { ...dataVerificada };
+                    globalResponse.pintarData = { ...dataVerificada };
+                    globalResponse.loadingData = false;
+
+                    setState({ ...globalResponse });
+                    submit(globalResponse);
+                  }
+                }
+              })
+              .catch((error) => {
+                //cuando se llega al final de las consultas individuales a sigfox, inicia verificación
+                count++;
+                if (count === devicesListToVerify.data.length) {
+                  if (!isForUpdate) {
+                    globalResponse.pintarData = { ...sigfoxResponse };
+
+                    setState({ ...globalResponse });
+                    submit(globalResponse);
+                  } else {
+                    const dataVerificada = compararDatos(
+                      devicesListToVerify,
+                      sigfoxResponse
+                    );
+                    globalResponse.sigfoxResponse = { ...dataVerificada };
+                    globalResponse.pintarData = { ...dataVerificada };
+                    globalResponse.loadingData = false;
+
+                    setState({ ...globalResponse });
+                    submit(globalResponse);
+                  }
+                }
+              });
+          } else console.log(`resp.status: ${resp.status}`);
+        })
+        .catch((error) => {
+          console.log(
+            `iteración en lista de devices. index: ${devicesListToVerify.data.indexOf(
+              element
+            )}, device: ${element.id}`
+          );
+          console.log(`fetch fail`);
+        });
+    });
+  }
 
   return (
     <section
@@ -164,7 +228,7 @@ function MultipleDeviceUnsubscribe({
     >
       <h2 id="multipleDeviceTitle">Load and update devices from csv file</h2>
 
-      <form id="multipleDeviceForm" onSubmit={submit}>
+      <form id="multipleDeviceForm" onSubmit={clicBoton}>
         <label htmlFor="csvFile" className="form-label">
           Upload .csv file
         </label>
@@ -182,9 +246,8 @@ function MultipleDeviceUnsubscribe({
           type="submit"
           id="validateDevicesButton"
           className="btn btn-primary"
-          onClick={clicBoton}
         >
-          Validate Devices
+          Get devices info from sigfox
         </button>
 
         <div

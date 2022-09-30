@@ -143,7 +143,7 @@ function SingleDeviceUnsubscribe({ visible, submit, username, password }) {
           id="validateSingleDeviceButton"
           className="btn btn-primary"
         >
-          Get a device from sigfox
+          Get device info from sigfox
         </button>
 
         <div

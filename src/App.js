@@ -105,6 +105,14 @@ function App() {
     });
   };
 
+  const clicValidateCsvButton = (respuesta) => {
+    console.log("data verificada recibida en app desde csv: ", respuesta);
+    setStates({
+      ...states,
+      globalGetDevicesResponse: { ...respuesta },
+    });
+  };
+
   return (
     <div className="App">
       <header>
@@ -138,9 +146,12 @@ function App() {
           />
           <MultipleDeviceUnsubscribe
             visible={states.visibility}
-            username={states.globalUsername}
-            password={states.globalPassword}
-            // submit={}
+            // username={states.globalUsername}
+            // password={states.globalPassword}
+            username={"62f190d07bfbda5b55622bf2"}
+            password={"dcf6382589f19f351a2f9f20cfe36bfe"}
+            dataFromCsv={{ ...states.globalGetDevicesResponse }}
+            submit={clicValidateCsvButton}
             changeCsv={changeCsv}
           />
           <ChangeArea

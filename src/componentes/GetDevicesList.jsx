@@ -155,7 +155,7 @@ function GetDevicesList({ username, password, visible, submit }) {
         </p>
 
         <button type="submit" id="getDevicesButton" className="btn btn-primary">
-          Get Devices From Sigfox
+          Get devices info from sigfox
         </button>
 
         <div
